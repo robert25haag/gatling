@@ -1,5 +1,5 @@
 /**
- * Copyright 2011-2016 GatlingCorp (http://gatling.io)
+ * Copyright 2011-2017 GatlingCorp (http://gatling.io)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.gatling.jms.client
 
 import java.util.{ Hashtable => JHashtable }
@@ -103,11 +104,13 @@ class SimpleJmsClient(
   /**
    * Wrapper to send a BytesMessage, returns the message ID of the sent message
    */
-  def sendBytesMessage(bytes: Array[Byte], props: Map[String, Any], jmsType: Option[String]): Message = {
+  def sendBytesMessage(bytes: Array[Byte], props: Map[String, Any], jmsType: Option[String], jmsPriority: Int): Message = {
     val message = session.createBytesMessage
     message.writeBytes(bytes)
     writePropsToMessage(props, message)
     jmsType.foreach(message.setJMSType)
+    producer.setPriority(jmsPriority)
+    message.setJMSPriority(jmsPriority)
     sendMessage(message)
   }
 
@@ -118,31 +121,37 @@ class SimpleJmsClient(
    * for the objectified primitive object types (Integer, Double, Long ...), String objects,
    * and byte arrays."
    */
-  def sendMapMessage(map: Map[String, Any], props: Map[String, Any], jmsType: Option[String]): Message = {
+  def sendMapMessage(map: Map[String, Any], props: Map[String, Any], jmsType: Option[String], jmsPriority: Int): Message = {
     val message = session.createMapMessage
     map.foreach { case (key, value) => message.setObject(key, value) }
     writePropsToMessage(props, message)
     jmsType.foreach(message.setJMSType)
+    producer.setPriority(jmsPriority)
+    message.setJMSPriority(jmsPriority)
     sendMessage(message)
   }
 
   /**
    * Wrapper to send an ObjectMessage, returns the message ID of the sent message
    */
-  def sendObjectMessage(o: java.io.Serializable, props: Map[String, Any], jmsType: Option[String]): Message = {
+  def sendObjectMessage(o: java.io.Serializable, props: Map[String, Any], jmsType: Option[String], jmsPriority: Int): Message = {
     val message = session.createObjectMessage(o)
     writePropsToMessage(props, message)
     jmsType.foreach(message.setJMSType)
+    producer.setPriority(jmsPriority)
+    message.setJMSPriority(jmsPriority)
     sendMessage(message)
   }
 
   /**
    * Wrapper to send a TextMessage, returns the message ID of the sent message
    */
-  def sendTextMessage(messageText: String, props: Map[String, Any], jmsType: Option[String]): Message = {
+  def sendTextMessage(messageText: String, props: Map[String, Any], jmsType: Option[String], jmsPriority: Int): Message = {
     val message = session.createTextMessage(messageText)
     writePropsToMessage(props, message)
     jmsType.foreach(message.setJMSType)
+    producer.setPriority(jmsPriority)
+    message.setJMSPriority(jmsPriority)
     sendMessage(message)
   }
 

@@ -1,5 +1,5 @@
 /**
- * Copyright 2011-2016 GatlingCorp (http://gatling.io)
+ * Copyright 2011-2017 GatlingCorp (http://gatling.io)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.gatling.jms.request
 
 import io.gatling.jms.JmsCheck
@@ -35,5 +36,6 @@ case class JmsAttributes(
   message:           JmsMessage,
   messageProperties: Map[Expression[String], Expression[Any]] = Map.empty,
   jmsType:           Option[Expression[String]]               = None,
+  jmsPriority:       Int                                      = 4,
   checks:            List[JmsCheck]                           = Nil
 )

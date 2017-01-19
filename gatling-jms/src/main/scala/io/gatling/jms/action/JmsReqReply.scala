@@ -1,5 +1,5 @@
 /**
- * Copyright 2011-2016 GatlingCorp (http://gatling.io)
+ * Copyright 2011-2017 GatlingCorp (http://gatling.io)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.gatling.jms.action
 
 import java.util.concurrent.atomic.AtomicBoolean
@@ -122,10 +123,10 @@ class JmsReqReplyActor(attributes: JmsAttributes, protocol: JmsProtocol, tracker
     val msg = jmsType.flatMap(jmsType =>
       messageProperties.flatMap { props =>
         attributes.message match {
-          case BytesJmsMessage(bytes) => bytes(session).map(bytes => client.sendBytesMessage(bytes, props, jmsType))
-          case MapJmsMessage(map)     => map(session).map(map => client.sendMapMessage(map, props, jmsType))
-          case ObjectJmsMessage(o)    => o(session).map(o => client.sendObjectMessage(o, props, jmsType))
-          case TextJmsMessage(txt)    => txt(session).map(txt => client.sendTextMessage(txt, props, jmsType))
+          case BytesJmsMessage(bytes) => bytes(session).map(bytes => client.sendBytesMessage(bytes, props, jmsType, attributes.jmsPriority))
+          case MapJmsMessage(map)     => map(session).map(map => client.sendMapMessage(map, props, jmsType, attributes.jmsPriority))
+          case ObjectJmsMessage(o)    => o(session).map(o => client.sendObjectMessage(o, props, jmsType, attributes.jmsPriority))
+          case TextJmsMessage(txt)    => txt(session).map(txt => client.sendTextMessage(txt, props, jmsType, attributes.jmsPriority))
         }
       })
 

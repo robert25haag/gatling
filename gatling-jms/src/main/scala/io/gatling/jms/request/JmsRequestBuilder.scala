@@ -1,5 +1,5 @@
 /**
- * Copyright 2011-2016 GatlingCorp (http://gatling.io)
+ * Copyright 2011-2017 GatlingCorp (http://gatling.io)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.gatling.jms.request
 
 import java.io.{ Serializable => JSerializable }
@@ -76,6 +77,8 @@ case class JmsRequestBuilder(attributes: JmsAttributes, factory: JmsAttributes =
   def property(key: Expression[String], value: Expression[Any]) = this.modify(_.attributes.messageProperties).using(_ + (key -> value))
 
   def jmsType(jmsType: Expression[String]) = this.modify(_.attributes.jmsType).setTo(Some(jmsType))
+
+  def jmsPriority(jmsPriority: Int) = this.modify(_.attributes.jmsPriority).setTo(jmsPriority)
 
   /**
    * Add a check that will be perfomed on each received JMS response message before giving Gatling on OK/KO response

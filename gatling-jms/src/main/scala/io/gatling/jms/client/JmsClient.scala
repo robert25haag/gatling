@@ -1,5 +1,5 @@
 /**
- * Copyright 2011-2016 GatlingCorp (http://gatling.io)
+ * Copyright 2011-2017 GatlingCorp (http://gatling.io)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.gatling.jms.client
 
 import javax.jms.{ Message, MessageConsumer }
@@ -51,7 +52,7 @@ trait JmsClient {
   /**
    * Wrapper to send a BytesMessage, returns the message ID of the sent message
    */
-  def sendBytesMessage(bytes: Array[Byte], props: Map[String, Any], jmsType: Option[String]): Message
+  def sendBytesMessage(bytes: Array[Byte], props: Map[String, Any], jmsType: Option[String], jmsPriority: Int): Message
 
   /**
    * Wrapper to send a MapMessage, returns the message ID of the sent message
@@ -60,17 +61,17 @@ trait JmsClient {
    * for the objectified primitive object types (Integer, Double, Long ...), String objects,
    * and byte arrays."
    */
-  def sendMapMessage(map: Map[String, Any], props: Map[String, Any], jmsType: Option[String]): Message
+  def sendMapMessage(map: Map[String, Any], props: Map[String, Any], jmsType: Option[String], jmsPriority: Int): Message
 
   /**
    * Wrapper to send an ObjectMessage, returns the message ID of the sent message
    */
-  def sendObjectMessage(o: java.io.Serializable, props: Map[String, Any], jmsType: Option[String]): Message
+  def sendObjectMessage(o: java.io.Serializable, props: Map[String, Any], jmsType: Option[String], jmsPriority: Int): Message
 
   /**
    * Wrapper to send a TextMessage, returns the message ID of the sent message
    */
-  def sendTextMessage(messageText: String, props: Map[String, Any], jmsType: Option[String]): Message
+  def sendTextMessage(messageText: String, props: Map[String, Any], jmsType: Option[String], jmsPriority: Int): Message
 
   def close(): Unit
 }
